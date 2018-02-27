@@ -1,4 +1,4 @@
-# awe-concurrent-datapipeline-emr-livy
+# aws-concurrent-datapipeline-emr-livy
 
 ## Prerequisites
 
