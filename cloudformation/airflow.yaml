@@ -124,6 +124,8 @@ Resources:
       KeyName: !Ref 'KeyName'
       SecurityGroups: [!Ref 'EC2SecurityGroup']
       InstanceType: !Ref InstanceType
+      IamInstanceProfile:
+        Ref: EC2InstanceProfile
       Tags:
         -
           Key: Name
@@ -216,3 +218,27 @@ Resources:
       DBSecurityGroupIngress:
         EC2SecurityGroupName:
           Ref: EC2SecurityGroup
+  EC2Role:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: AirflowInstanceRole
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Service:
+                - "ec2.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/AmazonElasticMapReduceFullAccess 
+  EC2InstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      InstanceProfileName: AirflowInstanceProfile
+      Roles:
+        -
+          Ref: EC2Role
