@@ -5,19 +5,42 @@ which creates a concurrent data pipeline by using Amazon EMR and Apache Livy. Th
 ### Prerequisites
 * You must have an AWS account
 
-### Steps
-1. Run the cloudformation template to create the Airflow server.
-2. Login to the EC2 machine
-3. sudo
-    ``````
+### How to get the movielens data?
+1. Download the movielens data (FileName: ml-latest.zip) from https://grouplens.org/datasets/movielens/latest/ and unzip it.
+2. You should see 6 .csv files (tags.csv, genome-tags.csv, links.csv, movies.csv, ratings.csv, genome-scores.csv).
+3. Create an S3 bucket and upload all the files to that bucket. Keep a note of the S3 path.
+
+### How to run the data pipeline?
+1. Create a keypair which will be used to ssh into the Airflow EC2 instance as well as to spin up the EMR cluster. Keep a note of the name of the EC2 keypair.
+2. Run the cloudformation template (airflow.yaml) to create the Airflow server.
+  * It will ask you to choose a keypair. Select the one you created in Step 1.
+  * For the other parameters, I have chosen default values but feel free to change them.
+3. Once the CloudFormation stack is spun up, login to the EC2 instance.
+   ```
+   ssh -i <Private key> ec2-user@public-ip
+   ```
+
+   * Now you need to run some commands as the root user.
+   ```
     sudo su
     cd ~/airflow
+    # Install git
+    yum install git
+    # Clone the repository
+    git clone <Clone-URL>
+    # Move all the files to the ~/airflow directory
+    mv -r aws-concurrent_datapipeline_emr_livy/* ~/airflow/
+    rm -r concurrent_datapipeline_emr_livy
     ```
-4. create a 'dags' directory
-    ``````
-    mkdir dags
-    cd dags/
-    mkdir lib
-    ```
-5. Copy emr_lib.py here. TODO: Make EMR key name a parameter.
-__init__.py
+   * Go to the emr_lib.py file and change the EMR key pair name (Line 15) to the name of the keypair that you created in Step 1.
+   * Change the S3 path to the path of the respective .csv files in each of the .scala files (located in the transform folder)
+   * Source the bash_profile
+   ```
+   source ~/.bash_profile
+   ```
+   * Start the airflow scheduler
+   ```
+   airflow scheduler
+   ```
+4. For the purposes of the blog, I have made the Airflow webserver open to the world so you should be able to access it. Open any browser and go to <EC2-public-ip>:8080. You should see the DAG named as 'transform_movielens' along with some example DAGS.
+5. Click on the run button and hopefully you should see your DAG running.
