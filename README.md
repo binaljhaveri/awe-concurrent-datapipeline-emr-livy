@@ -32,7 +32,7 @@ which creates a concurrent data pipeline by using Amazon EMR and Apache Livy. Th
     mv aws-concurrent-data-orchestration-pipeline-emr-livy/* ~/airflow/
     rm -rf aws-concurrent-data-orchestration-pipeline-emr-livy
     ```
-   * Go to the emr_lib.py file and change the EMR key pair name (Line 15) to the name of the keypair that you created in Step 1.
+   * Go to the emr_lib.py file which is located in dags/airflowlib folder and change the EMR key pair name (Line 30) to the name of the keypair that you created in Step 1.
    * Change the S3 path to the path of the respective .csv files in each of the .scala files (located in the transform folder)
    * Source the bash_profile
    ```
