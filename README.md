@@ -13,7 +13,7 @@ which creates a concurrent data pipeline by using Amazon EMR and Apache Livy. Th
 
 ### How to run the pipeline?
 1. Create a keypair which will be used to ssh into the Airflow EC2 instance as well as to spin up the EMR cluster. Keep a note of the name of the EC2 keypair. Go to EC2 --> Network & Security --> Key Pairs
-    <img width="177" alt="keypair" src="https://user-images.githubusercontent.com/36875404/38074782-df2a44f6-32e4-11e8-9209-f2e4745ba2e1.png">
+<img width="177" alt="keypair" src="https://user-images.githubusercontent.com/36875404/38074782-df2a44f6-32e4-11e8-9209-f2e4745ba2e1.png">
 2. Run the cloudformation template (airflow.yaml) from this github project to create the Airflow server.
   * It will ask you to choose a keypair. Select the one you created in Step 1.
   * For the other parameters, I have chosen default values but feel free to change them.
