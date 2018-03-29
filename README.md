@@ -12,8 +12,10 @@ which creates a concurrent data pipeline by using Amazon EMR and Apache Livy. Th
 3. Create an S3 bucket and upload all the files to that bucket. Make a note of the S3 path. It will be needed later in the process.
 
 ### How to run the pipeline?
-1. Create a keypair which will be used to ssh into the Airflow EC2 instance as well as to spin up the EMR cluster. Keep a note of the name of the EC2 keypair. Go to EC2 --> Network & Security --> Key Pairs
- <img width="177" alt="keypair" src="https://user-images.githubusercontent.com/36875404/38074782-df2a44f6-32e4-11e8-9209-f2e4745ba2e1.png">
+1. Create an Amazon EC2 key pair
+To build this application, you’ll need to connect to an EC2 instance using SSH, which requires access to an Amazon EC2 key pair in the region you’re launching your CloudFormation stack. If you have an existing Key Pair in your region, feel free to use that Key Pair for this exercise. If not, to create a key pair open the AWS Management Console and navigate to the EC2 console. In the EC2 console left navigation pane select Key Pairs. 
+![image](https://user-images.githubusercontent.com/36875404/38102716-f0405538-3338-11e8-8326-49a05388b55c.png)
+Choose Create Key Pair then type in airflow_key_pair (be sure to type it exactly like this!), then choose Create. This downloads a file called airflow_key_pair.pem. Be sure to keep this in a safe and private place. Without access to this file, you will lose the ability to use SSH to connect with your EC2 instance.
 2. Run the cloudformation template (airflow.yaml) from this github project to create the Airflow server.
   * It will ask you to choose a keypair. Select the one you created in Step 1.
   * For the other parameters, I have chosen default values but feel free to change them.
