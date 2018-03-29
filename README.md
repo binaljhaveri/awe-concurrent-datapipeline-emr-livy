@@ -1,4 +1,4 @@
-# Building a Concurrent Data Pipeline Using Amazon EMR and Apache Livy
+# Building a Concurrent Data Orchestration Pipeline Using Amazon EMR and Apache Livy
 This code demonstrates the architecture featured on the AWS Big Data blog (<link>)
 which creates a concurrent data pipeline by using Amazon EMR and Apache Livy. This pipeline is orchestrated by Apache Airflow.
 
@@ -6,7 +6,7 @@ which creates a concurrent data pipeline by using Amazon EMR and Apache Livy. Th
 * You must have an AWS account
 
 ### How to get the movielens data?
-1. Download the movielens data (FileName: ml-latest.zip) from https://grouplens.org/datasets/movielens/latest/ and unzip it.
+1. Download the full movielens data (FileName: ml-latest.zip) from https://grouplens.org/datasets/movielens/latest/ and unzip it.
 2. You should see 6 .csv files (tags.csv, genome-tags.csv, links.csv, movies.csv, ratings.csv, genome-scores.csv).
 3. Create an S3 bucket and upload all the files to that bucket. Keep a note of the S3 path.
 
