@@ -149,8 +149,9 @@ Resources:
          # Start cfn-init
          /opt/aws/bin/cfn-init -v -c install --stack ${AWS::StackId} --resource EC2Instance --region ${AWS::Region}
          # Upgrade pip
-         pip install --upgrade pip
          pip install boto3
+         echo 'export PATH=/usr/local/bin:$PATH' >> /root/.bash_profile
+         source /root/.bash_profile
          # Install airflow using pip
          echo "Install Apache Airflow"
          sudo pip install apache-airflow
@@ -182,7 +183,6 @@ Resources:
           packages:
             yum:
               gcc: []
-              python-pip: []
     DependsOn: DBInstance
   DBInstance:
     Type: AWS::RDS::DBInstance
