@@ -18,9 +18,9 @@ which creates a concurrent data pipeline by using Amazon EMR and Apache Livy. Th
   * It will ask you to choose a keypair. Select the one you created in Step 1.
   * For the other parameters, I have chosen default values but feel free to change them.
 3. Once the CloudFormation stack is spun up, login to the EC2 instance.
-   ```
-   ssh -i <Private key> ec2-user@public-ip
-   ```
+    ```
+    ssh -i <Private key> ec2-user@public-ip
+    ```
    
    * Now you need to run some commands as the root user.
    ```
