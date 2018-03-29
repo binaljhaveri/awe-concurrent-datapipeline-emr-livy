@@ -21,7 +21,7 @@ which creates a concurrent data pipeline by using Amazon EMR and Apache Livy. Th
    ```
    ssh -i <Private key> ec2-user@public-ip
    ```
-
+   
    * Now you need to run some commands as the root user.
    ```
     sudo su
