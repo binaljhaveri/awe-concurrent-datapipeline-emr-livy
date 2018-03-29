@@ -7,7 +7,7 @@ which creates a concurrent data pipeline by using Amazon EMR and Apache Livy. Th
 
 ### How to get the movielens data?
 1. Download the full movielens data (FileName: ml-latest.zip) from https://grouplens.org/datasets/movielens/latest/ and unzip it.
-<img width="887" alt="screen shot 2018-03-28 at 11 52 53 pm" src="https://user-images.githubusercontent.com/36875404/38074345-51e16f3a-32e3-11e8-8317-b6bd60627b9e.png">
+    <img width="887" alt="screen shot 2018-03-28 at 11 52 53 pm" src="https://user-images.githubusercontent.com/36875404/38074345-51e16f3a-32e3-11e8-8317-b6bd60627b9e.png">
 2. You should see 6 .csv files (tags.csv, genome-tags.csv, links.csv, movies.csv, ratings.csv, genome-scores.csv).
 3. Create an S3 bucket and upload all the files to that bucket. Keep a note of the S3 path.
 
