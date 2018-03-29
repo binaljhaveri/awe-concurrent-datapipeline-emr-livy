@@ -148,6 +148,8 @@ Resources:
          yum install -y aws-cfn-bootstrap
          # Start cfn-init
          /opt/aws/bin/cfn-init -v -c install --stack ${AWS::StackId} --resource EC2Instance --region ${AWS::Region}
+         # Install pip
+         yum install -y python-pip
          # Upgrade pip
          pip install --upgrade pip
          pip install boto3
@@ -234,7 +236,7 @@ Resources:
               - "sts:AssumeRole"
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AmazonS3FullAccess
-        - arn:aws:iam::aws:policy/AmazonElasticMapReduceFullAccess 
+        - arn:aws:iam::aws:policy/AmazonElasticMapReduceFullAccess
   EC2InstanceProfile:
     Type: AWS::IAM::InstanceProfile
     Properties:
