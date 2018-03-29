@@ -25,7 +25,7 @@ which creates a concurrent data pipeline by using Amazon EMR and Apache Livy. Th
     sudo su
     cd ~/airflow
     # Install git
-    yum install git
+    yum install -y git
     # Clone the repository
     git clone <Clone-URL>
     # Move all the files to the ~/airflow directory
