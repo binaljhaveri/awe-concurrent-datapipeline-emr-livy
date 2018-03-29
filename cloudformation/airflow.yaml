@@ -149,7 +149,7 @@ Resources:
          # Start cfn-init
          /opt/aws/bin/cfn-init -v -c install --stack ${AWS::StackId} --resource EC2Instance --region ${AWS::Region}
          # Upgrade pip
-         pip install boto3
+         sudo pip install boto3
          # Install airflow using pip
          echo "Install Apache Airflow"
          sudo pip install apache-airflow
