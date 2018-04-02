@@ -148,7 +148,6 @@ Resources:
          yum install -y aws-cfn-bootstrap
          # Start cfn-init
          /opt/aws/bin/cfn-init -v -c install --stack ${AWS::StackId} --resource EC2Instance --region ${AWS::Region}
-         # Upgrade pip
          sudo pip install boto3
          # Install airflow using pip
          echo "Install Apache Airflow"
@@ -165,8 +164,10 @@ Resources:
          source /root/.bash_profile
          # Initialize Airflow
          airflow initdb
+         # Update the RDS connection in the Airflow Config file
          sed -i '/sql_alchemy_conn/s/^/#/g' ~/airflow/airflow.cfg
          sed -i '/sql_alchemy_conn/ a sql_alchemy_conn = postgresql://${DBUsername}:${DBPassword}@${DBInstance.Endpoint.Address}:${DBInstance.Endpoint.Port}/${DBName}' ~/airflow/airflow.cfg
+         # Update the type of executor in the Airflow Config file
          sed -i '/executor = SequentialExecutor/s/^/#/g' ~/airflow/airflow.cfg
          sed -i '/executor = SequentialExecutor/ a executor = LocalExecutor' ~/airflow/airflow.cfg
          airflow initdb

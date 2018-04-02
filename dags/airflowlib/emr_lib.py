@@ -27,7 +27,7 @@ def create_cluster(cluster_name='Airflow-' + str(datetime.now()), release_label=
                 }
             ],
             'KeepJobFlowAliveWhenNoSteps': True,
-            'Ec2KeyName' : 'binal-creds',
+            'Ec2KeyName' : 'airflow-key-pair',
         },
         VisibleToAllUsers=True,
         JobFlowRole='EMR_EC2_DefaultRole',
@@ -55,8 +55,10 @@ def wait_for_cluster_creation(cluster_id):
 def terminate_cluster(cluster_id):
     emr.terminate_job_flows(JobFlowIds=[cluster_id])
 
-
+# Creates an interactive scala spark session.
+# Python(kind=pyspark), R(kind=sparkr) and SQL(kind=sql) spark sessions can also be created by changing the value of kind.
 def create_spark_session(master_dns, kind='spark'):
+    # 8998 is the port on which the Livy server runs
     host = 'http://' + master_dns + ':8998'
     data = {'kind': kind}
     headers = {'Content-Type': 'application/json'}

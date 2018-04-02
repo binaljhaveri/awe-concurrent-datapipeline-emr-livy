@@ -17,26 +17,31 @@ default_args = {
     'provide_context': True
 }
 
+# Initialize the DAG
+# Concurrency --> Number of tasks allowed to run concurrently
 dag = DAG('transform_movielens', concurrency=3, schedule_interval=None, default_args=default_args)
 emr.client(region_name='us-west-2')
 
+# Creates an EMR cluster
 def create_emr(**kwargs):
     cluster_id = emr.create_cluster(cluster_name='movielens_cluster', num_core_nodes=2)
     return cluster_id
 
-
+# Waits for the EMR cluster to be ready to accept jobs
 def wait_for_completion(**kwargs):
     ti = kwargs['ti']
     cluster_id = ti.xcom_pull(task_ids='create_cluster')
     emr.wait_for_cluster_creation(cluster_id)
 
-
+# Terminates the EMR cluster
 def terminate_emr(**kwargs):
     ti = kwargs['ti']
     cluster_id = ti.xcom_pull(task_ids='create_cluster')
     emr.terminate_cluster(cluster_id)
 
+# Converts each of the movielens datafile to parquet
 def transform_movies_to_parquet(**kwargs):
+    # ti is the Task Instance
     ti = kwargs['ti']
     cluster_id = ti.xcom_pull(task_ids='create_cluster')
     cluster_dns = emr.get_cluster_dns(cluster_id)
@@ -48,6 +53,7 @@ def transform_movies_to_parquet(**kwargs):
     emr.kill_spark_session(session_url)
 
 def transform_tags_to_parquet(**kwargs):
+    # ti is the Task Instance
     ti = kwargs['ti']
     cluster_id = ti.xcom_pull(task_ids='create_cluster')
     cluster_dns = emr.get_cluster_dns(cluster_id)
@@ -59,6 +65,7 @@ def transform_tags_to_parquet(**kwargs):
     emr.kill_spark_session(session_url)
 
 def transform_ratings_to_parquet(**kwargs):
+    # ti is the Task Instance
     ti = kwargs['ti']
     cluster_id = ti.xcom_pull(task_ids='create_cluster')
     cluster_dns = emr.get_cluster_dns(cluster_id)
@@ -70,6 +77,7 @@ def transform_ratings_to_parquet(**kwargs):
     emr.kill_spark_session(session_url)
 
 def transform_links_to_parquet(**kwargs):
+    # ti is the Task Instance
     ti = kwargs['ti']
     cluster_id = ti.xcom_pull(task_ids='create_cluster')
     cluster_dns = emr.get_cluster_dns(cluster_id)
@@ -81,6 +89,7 @@ def transform_links_to_parquet(**kwargs):
     emr.kill_spark_session(session_url)
 
 def transform_genome_scores_to_parquet(**kwargs):
+    # ti is the Task Instance
     ti = kwargs['ti']
     cluster_id = ti.xcom_pull(task_ids='create_cluster')
     cluster_dns = emr.get_cluster_dns(cluster_id)
@@ -92,6 +101,7 @@ def transform_genome_scores_to_parquet(**kwargs):
     emr.kill_spark_session(session_url)
 
 def transform_genome_tags_to_parquet(**kwargs):
+    # ti is the Task Instance
     ti = kwargs['ti']
     cluster_id = ti.xcom_pull(task_ids='create_cluster')
     cluster_dns = emr.get_cluster_dns(cluster_id)
@@ -102,7 +112,7 @@ def transform_genome_tags_to_parquet(**kwargs):
     emr.track_statement_progress(cluster_dns, statement_response.headers)
     emr.kill_spark_session(session_url)
 
-
+# Define the individual tasks using Python Operators
 create_cluster = PythonOperator(
     task_id='create_cluster',
     python_callable=create_emr,
@@ -150,6 +160,7 @@ terminate_cluster = PythonOperator(
     trigger_rule='all_done',
     dag=dag)
 
+# construct the DAG by setting the dependencies
 create_cluster >> wait_for_cluster_completion
 wait_for_cluster_completion >> transform_movies >> terminate_cluster
 wait_for_cluster_completion >> transform_ratings >> terminate_cluster
