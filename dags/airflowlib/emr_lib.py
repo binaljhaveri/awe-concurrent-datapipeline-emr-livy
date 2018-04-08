@@ -27,7 +27,7 @@ def create_cluster(cluster_name='Airflow-' + str(datetime.now()), release_label=
                 }
             ],
             'KeepJobFlowAliveWhenNoSteps': True,
-            'Ec2KeyName' : 'airflow-key-pair',
+            'Ec2KeyName' : 'airflow_key_pair',
         },
         VisibleToAllUsers=True,
         JobFlowRole='EMR_EC2_DefaultRole',
@@ -83,7 +83,7 @@ def wait_for_idle_session(master_dns, response_headers):
 def kill_spark_session(session_url):
     requests.delete(session_url, headers={'Content-Type': 'application/json'})
 
-
+# Submits the scala code as a simple JSON command to the Livy server
 def submit_statement(session_url, statement_path):
     statements_url = session_url + '/statements'
     with open(statement_path, 'r') as f:
@@ -93,13 +93,14 @@ def submit_statement(session_url, statement_path):
     logging.info(response.json())
     return response
 
-
+# Function to help track the progress of the scala code submitted to Apache Livy
 def track_statement_progress(master_dns, response_headers):
     statement_status = ''
     host = 'http://' + master_dns + ':8998'
     session_url = host + response_headers['location'].split('/statements', 1)[0]
-
+    # Poll the status of the submitted scala code
     while statement_status != 'available':
+        # If a statement takes longer than a few milliseconds to execute, Livy returns early and provides a statement URL that can be polled until it is complete:
         statement_url = host + response_headers['location']
         statement_response = requests.get(statement_url, headers={'Content-Type': 'application/json'})
         statement_status = statement_response.json()['state']
