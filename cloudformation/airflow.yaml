@@ -128,7 +128,9 @@ Resources:
           packages:
             yum:
               gcc: []
-    DependsOn: [DBInstance,EC2SecurityGroup]
+    DependsOn:
+      - DBInstance
+      - EC2SecurityGroup
   DBInstance:
     Type: AWS::RDS::DBInstance
     Properties:
